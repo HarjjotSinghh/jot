@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# The private layer never leaves this machine.
+# Nothing under here may reach a commit, a PR body, a filename, or a raw URL.
+# ---------------------------------------------------------------------------
+private/
+private/**
+**/private/
+.private/
+secrets/
+**/secrets/
+
+# Raw mined evidence: verbatim excerpts from real client and personal sessions.
+# The distilled rules are public; their sources never are.
+state/evidence/
+state/evidence/**
+state/pending/
+state/pending/**
+*-events.jsonl
+*-digest.md
+corpus-*.json*
+transcript-*.json*
+
+# Drafts of outbound messages. He sends these himself; git never sees them.
+drafts/
+**/drafts/
+*.draft.md
+
+# Benchmark runs hold his blind answers alongside the model's, pre-scoring.
+bench/runs/
+bench/runs/**
+
+# Credentials and environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+auth.json
+credentials.json
+.credentials.json
+*_token
+*.token
+
+# Scratch and build
+*.log
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini

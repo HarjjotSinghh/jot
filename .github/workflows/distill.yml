@@ -1,0 +1,97 @@
+name: distill
+
+# Re-runs the distillation against fresh evidence and opens a PR against this repo
+# rather than pushing to main. The review is the point: a self-merging distillation
+# drifts into slop within a month, and reviewing the diff is itself a judgment
+# signal worth feeding back into the next pass.
+#
+# Note: the corpus lives on Harjot's machine, not in CI. This workflow is the
+# review-and-promote half of the loop; run scripts/extract_corpus.py locally and
+# drop promotion candidates into state/pending/ for it to pick up.
+
+on:
+  schedule:
+    - cron: "0 4 * * 1" # Mondays, 04:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote-pending:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for pending promotions
+        id: check
+        run: |
+          if [ -z "$(ls -A state/pending 2>/dev/null | grep -v '^\.')" ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+            echo "Nothing pending. Skipping."
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+            echo "Pending items:"
+            ls -1 state/pending
+          fi
+
+      - name: Guard against private leakage
+        if: steps.check.outputs.empty == 'false'
+        run: |
+          # The private layer must never reach a tracked file. This is the last
+          # line of defence behind .gitignore, and it is a hard failure.
+          if git ls-files --error-unmatch private/ >/dev/null 2>&1; then
+            echo "::error::private/ is tracked by git. Stop and fix .gitignore."
+            exit 1
+          fi
+          if git ls-files --error-unmatch state/evidence/ >/dev/null 2>&1; then
+            echo "::error::state/evidence/ is tracked by git. Raw session excerpts must stay local."
+            exit 1
+          fi
+
+      - name: Lint the knowledge files
+        if: steps.check.outputs.empty == 'false'
+        run: |
+          fail=0
+          for f in *.md; do
+            # Em dashes and smart quotes are a stated hard rule; they should not
+            # survive into the files that teach agents that rule.
+            if grep -nP '[\x{2014}\x{2018}\x{2019}\x{201C}\x{201D}]' "$f"; then
+              echo "::error file=$f::non-ASCII punctuation found (em dash or smart quotes)"
+              fail=1
+            fi
+            # A rule with no evidence tag is a vibe.
+            if [ "$f" != "README.md" ] && [ "$f" != "ENTRY.md" ] && ! grep -q '\[\(observed\|stated\|inferred\)' "$f"; then
+              echo "::warning file=$f::no evidence tags found"
+            fi
+          done
+          exit $fail
+
+      - name: Open promotion PR
+        if: steps.check.outputs.empty == 'false'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: distill/pending-promotions
+          title: "distill: promote pending judgment updates"
+          commit-message: "distill: promote pending judgment updates"
+          body: |
+            Pending decision pairs are ready for promotion into the knowledge files.
+
+            Review each against the precedence order in `ENTRY.md`:
+
+            1. Newer over older
+            2. Production over stated
+            3. Repeated over isolated
+            4. Explicit over inferred
+            5. Narrow over broad
+
+            Before merging, check that every promoted rule has:
+
+            - a `Because` line
+            - a `Doesn't apply when` line
+            - an evidence tag with a date
+
+            Then re-run the benchmark. A rule that fixes one golden case and breaks
+            another is stated too broadly.
+          delete-branch: true
