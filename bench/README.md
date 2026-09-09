@@ -73,6 +73,26 @@ It builds a side-by-side comparison table for scoring, then records the totals.
 
 ---
 
+## A benchmark set burns itself
+
+The moment you promote a run's results into the knowledge files, that set stops
+being a measurement. Evidence lines quote the correct answer, so the next run reads
+the answer key on its way in. This is not hypothetical: set v1 was retired after one
+promotion cycle, when seven of its ten questions ended up quoted verbatim across
+`PRINCIPLES.md`, `ENGINEERING.md`, `AGENTIC.md` and `FRONTEND.md`. The arm-B agent
+noticed and said so before anyone asked it to.
+
+Two ways to live with it:
+
+1. **Hold out a set.** Write more questions than you score. Keep some sealed, and
+   only ever cite the ones you have already spent.
+2. **Cite the rule, not the answer.** Record that a benchmark corrected a rule's
+   range without quoting the correct call. Weaker evidence, longer-lived set.
+
+A spent set is not waste. It becomes a **regression suite**: run it on every
+knowledge-file change to confirm the patches held and nothing adjacent broke. It
+just cannot tell you how faithful the skill is any more.
+
 ## Turning misses into golden cases
 
 Every question where B scored 0 or -1 becomes a golden test case in

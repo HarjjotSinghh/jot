@@ -65,3 +65,19 @@ than Windows-primary.
 
 `scan_leaks.py` denylist grew to 47 terms and immediately caught three more
 identifiers in the already-published public layer.
+
+## 2026-09-10 - v0.3.1, Q9 fixed, set v1 retired
+
+Rerun `20260910-0435-rerun2`: **B 20/20, A 7/20**. Q9 closed; every other question held.
+
+**That 20 is not a fidelity measurement and is not claimed as one.** Promoting the
+v1 results into the knowledge files put the answer key inside them: seven of ten
+questions are now quoted verbatim across PRINCIPLES, ENGINEERING, AGENTIC and
+FRONTEND. The arm-B agent flagged it unprompted in its own report.
+
+Set v1 is retired as a benchmark and kept as a regression suite. The honest fidelity
+numbers remain 13/20 (first run) and 18/20 (after patching), both measured before
+any answers were folded back in.
+
+Recorded in `bench/README.md` as a general property: a distillation benchmark burns
+itself on promotion. Either hold out a set, or cite the rule rather than the answer.
