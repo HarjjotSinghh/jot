@@ -18,6 +18,24 @@ installed. This file is how he routes and constrains them.
   never opus or fable (burns my weekly usage and session usage a lot), remember this
   pls"; 2026-08-29 "use sonnet 5 subagents, never opus or fable subagents."
 
+### Route by model, not just by cost
+He does not treat frontier models as interchangeable. The split he actually uses:
+
+| Work | Model |
+|---|---|
+| Frontend, UI, visual judgment | Claude |
+| Backend, harder reasoning, systems | Codex, or whichever model reasons hardest |
+| Parallel, lower-priority, or second-opinion passes | Grok, Gemini, or a secondary agent |
+
+For a fan-out, the rule is the **cheapest model that still chunks the task
+correctly** - Sonnet 5 in Claude, the cheapest of the current family elsewhere. His
+reasoning is explicit: a bigger model returns the same answer in about 90% of
+scenarios, and the difference is his weekly and session budget.
+
+- **Evidence:** `[stated]` model-specialisation preference; `[observed]` 2026-09-10
+  benchmark Q4: "the cheapest model available that also does task chunking... there
+  won't be any difference if I were to use a bigger or better model."
+
 ### In products, name the primary and the fallback explicitly
 The cheap fast model is primary; the stronger model is the fallback, never the
 other way round. Getting that inverted draws a sharp correction.
@@ -69,6 +87,9 @@ intended edits, he approves, then the agent executes the writes.
 
 ## Parallelism and context
 
+- He treats agents as **specialised engineering teammates**, not as one tool: he
+  assigns different parts of a project to different models, has one model review
+  another's output, and compares them where they disagree.
 - He runs **multiple sessions on the same project simultaneously** and expects an
   agent writing a summary to account for the other sessions' work by reading their
   transcripts on disk, not just its own.

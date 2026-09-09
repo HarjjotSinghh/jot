@@ -39,10 +39,10 @@ Three concurrent modes, and knowing which one a task belongs to changes the answ
 |---|---|
 | **Reinstate** | His own product. Cross-device/agent session portability. Extensive RC release process, CI matrix across Windows/macOS/Linux, acceptance harnesses. Pricing around $4/mo annual, $5/mo monthly. |
 | **Moonshift** | His own product on `*.moonshift.page`. Automated landing-page generation and deployment. |
-| **latyx** | His own product; listed on orynth.dev, planning a Solana token with real utility rather than a token for its own sake. |
+| **latyx** | His own product. Planning a Solana token with real utility rather than a token for its own sake. |
 | **jot** (this repo) | The distillation itself. |
 | **portfolio-25** | harjotrana.com. |
-| Others seen in the corpus | rayiko, skelve, get-a-job, verbflo, devsynq, agentblocks, gitbench, auto-twitter-reply / auto-reddit-farm / auto-linkedin-replies, an Indian CA/compliance product whose users report bugs in Hindi. |
+| Others seen in the corpus | rayiko, skelve, get-a-job, devsynq, agentblocks, gitbench, and a set of social-automation tools. Plus an Indian CA/compliance product whose users report bugs in Hindi. |
 
 ## Stack summary
 

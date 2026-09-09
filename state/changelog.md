@@ -35,3 +35,33 @@ Four golden cases opened under `bench/golden/`.
 
 Process finding: arm B loaded all 16 files for a 10-question set and still lost 4.
 More context made the wrong rules easier to reach, not harder.
+
+## 2026-09-10 - v0.3, personal context layer
+
+Benchmark rerun `20260910-0420-rerun` against the v0.2 patches: **B 18/20, A 7/20,
+delta +11** (was 13/20). Q5, Q6, Q7 and Q10 all closed to 2.
+
+**Q9 regressed 2 -> 0.** The new "Clear the blocker in your own path" rule was
+over-applied to a two-minute fix on a live customer list. Exactly the failure the
+golden-case process exists to catch: a rule that fixes one case and breaks another is
+stated too broadly. Fixed by adding a live-system exclusion to that rule and making
+`BOUNDARIES.md` explicitly outrank every principle, not merely tie-break against them.
+
+Contributing cause: the v0.2 routing tightening stopped the agent loading `private/`,
+where the customer-list context lives. The private-load trigger was too narrow and now
+includes live customer data and marketing systems regardless of whether a person is named.
+
+Personal context layer added, all gitignored, structured by how fast each tier rots:
+
+- `IDENTITY.md` (permanent) - background, track record, stack, learning style, register
+- `PATTERNS.md` (semi-stable) - the behavioural patterns he asked to be called out on
+- `PEOPLE.md`, `PROJECTS.md`, `CLIENTS.md`, `GOALS.md` (semi-stable)
+- `CURRENT.md`, `FINANCE.md` (current, dated, verify before use)
+
+Public rules gained from it: per-model routing (Claude frontend, Codex backend,
+cheapest-that-chunks for fan-out), the decision-answer format, the two-register
+distinction in `VOICE.md`, Go and Svelte in the stack, and macOS-preferred rather
+than Windows-primary.
+
+`scan_leaks.py` denylist grew to 47 terms and immediately caught three more
+identifiers in the already-published public layer.

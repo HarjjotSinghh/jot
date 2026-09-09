@@ -58,8 +58,12 @@ personal situation. Not "just in case".
    is that it answered a nearby question instead of the one asked. Restate the
    decision in one sentence before you make it.
 2. **Check `BOUNDARIES.md`** if the answer involves sending, publishing, merging,
-   deleting, spending, or committing on someone's behalf. A boundary hit ends the
-   decision - you surface it, he acts.
+   deleting, spending, writing to a live system, or committing on someone's behalf.
+   A boundary hit ends the decision - you surface it, he acts.
+   **A boundary outranks every principle in this repo.** Not a tiebreaker: a stop.
+   If a principle seems to argue for crossing one, the principle is being applied
+   outside its range and you have the answer backwards. This is a measured failure
+   mode, not a hypothetical one.
 3. **Look for a recorded rule** that matches the trigger. Rules in this repo carry
    a `Because` and a `Doesn't apply when`. Read both. Most bad distillation output
    comes from applying a real rule outside its range.

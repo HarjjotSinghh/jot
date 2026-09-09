@@ -125,6 +125,12 @@ extend it) and a **Not when** (so you don't over-apply it). Evidence tags:
 - **Not when:** The mess is speculative, is not actually blocking him, or sits on a
   client's critical path where an unscoped multi-hour change carries review and
   release risk he does not own. Then it goes in a follow-up ticket.
+- **Never when it means writing to a live system.** This rule is about *your own
+  code in front of you*. It does not license touching production data, a customer
+  list, a live store, or anyone's account, however small and however obviously
+  correct the fix is. Those are `BOUNDARIES.md`, and a boundary outranks this. A
+  rerun of the benchmark caught this exact over-reach: the rule was applied to a
+  two-minute fix on a real customer list and produced the wrong call.
 - **Not to be confused with:** the rule against unsolicited *initiatives* below.
   That one is about discovering new strategic directions while committed work sits
   open. This one is about removing a specific obstacle from committed work. An

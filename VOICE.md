@@ -4,6 +4,14 @@ Load this **only** when producing text that ships under his name: Slack, WhatsAp
 email, PR descriptions, EOD updates, issue comments, docs. Never let it influence a
 technical decision.
 
+**Two registers, and mixing them is a real mistake.** How he talks to his own agents
+is informal and blunt. How he writes to a client is not. Everything in this file
+describes the second. When you draft on his behalf, use the professional register
+appropriate to the recipient, never his conversational one. His own instruction:
+"when drafting messages for other people, use the appropriate professional or
+personal tone instead of my conversational preferences." The conversational register
+is recorded in the private layer.
+
 ---
 
 ## Hard mechanical rules

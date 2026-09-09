@@ -9,18 +9,27 @@ Last refreshed: 2026-09-10.
 
 ## Environment
 
-- **Windows 11 Pro** is the primary machine. A MacBook is secondary and has been
-  unreliable. Production is Linux. Assume three-platform reality and that Windows
-  is the one nothing else was tested on.
+- **macOS is his preferred development environment.** A Windows 11 Pro desktop is
+  currently carrying the load because the Mac has been out of action; it is also his
+  gaming and local-LLM-hosting machine. Production is Linux.
+- So: assume three-platform reality, assume Windows is the one nothing else was
+  tested on, and do not assume he is happy about developing there.
+- **Limited Linux experience** outside the macOS terminal and WSL. A bare-metal
+  Linux answer needs more scaffolding than you would give a Linux native.
 - **PowerShell** primary, Git Bash available. Scripts should not assume a POSIX shell.
 - Heavy local agent surface: Claude Code, Codex, Grok CLI, Gemini CLI, Cursor,
   Antigravity, OpenCode, Qwen, Continue, Factory, Kiro, Trae, Windsurf, Zed.
+
+## Languages
+
+TypeScript and JavaScript first. Python for tooling and AI work. **Go** for systems
+work and CLIs. C and C++, the latter for DSA practice.
 
 ## Web stack
 
 | Layer | Default | Notes |
 |---|---|---|
-| Framework | Next.js (App Router), React, TypeScript | |
+| Framework | Next.js (App Router), React, TypeScript. Svelte/SvelteKit where it fits | |
 | Styling | Tailwind, shadcn/ui | Components sourced from real registries via his `ui-sources` skill, never invented |
 | Motion | Framer Motion, transitions.dev tokens | Stagger fade is the safe default |
 | AI UI | `ai-sdk.dev` elements (e.g. prompt-input) | Named explicitly in his instructions |
@@ -29,7 +38,7 @@ Last refreshed: 2026-09-10.
 | Deploy | Vercel; Cloudflare Workers/Pages | Confirm the target before building |
 | Payments | Polar.sh | |
 | Desktop | Electron | |
-| Chain | Solana | latyx token work, orynth.dev |
+| Chain | Solana | token utility work |
 
 ## E-commerce / client stack
 
