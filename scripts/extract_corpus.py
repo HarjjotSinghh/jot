@@ -125,7 +125,15 @@ MACHINE = re.compile(
     r"^\s*\[SYSTEM NOTIFICATION|"
     r"^\s*#\s*(?:AGENTS|CLAUDE|GEMINI)\.md instructions\b|"
     r"^\s*<INSTRUCTIONS>|"
-    r"^\s*<system-reminder>",
+    r"^\s*<system-reminder>|"
+    # Compaction summaries are the nastiest case. The agent writes them, but
+    # they arrive as a user turn, and they are long prose *about* Harjot's
+    # intent, which is precisely what the lexicon rewards. At 2% of the corpus
+    # they took 40% of the top-50 band: exactly the slice a human reads when
+    # distilling. They describe his judgment. They are not evidence of it.
+    r"^\s*This session is being continued from a previous conversation|"
+    r"^\s*(?:##\s*)?\d?\.?\s*Primary Request and Intent\b|"
+    r"^\s*Analysis:\s*$",
     re.I,
 )
 

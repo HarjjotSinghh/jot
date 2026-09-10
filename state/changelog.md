@@ -81,3 +81,20 @@ any answers were folded back in.
 
 Recorded in `bench/README.md` as a general property: a distillation benchmark burns
 itself on promotion. Either hold out a set, or cite the rule rather than the answer.
+
+## 2026-09-10 - v0.3.2, compaction summaries removed from the corpus
+
+Claude writes a compaction summary when a session runs out of context, and it
+arrives as a **user** turn. It is long prose explicitly about Harjot's intent,
+which is exactly what the judgment lexicon rewards.
+
+They were 31 of 1,427 events (2.2%) and **20 of the top 50 by score** (40%) -
+precisely the band a human reads when distilling. A summary describes his
+judgment in a voice that sounds like a primary source. It is not evidence of it.
+
+Filtered in `extract_corpus.py`. Corpus is now **1,398 events** from 1,290
+conversations, and the top 50 is 0/50 compaction summaries.
+
+Corrected numbers in README, the published blog post, and the launch drafts.
+The rules themselves are unaffected: every one traces to a specific dated quote
+from the crisp mid-band, not to a summary.

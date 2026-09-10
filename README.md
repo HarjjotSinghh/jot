@@ -59,7 +59,7 @@ that actually encode judgment: the corrections, the rejections, the "no, do it t
 way instead, because". Each one is paired with the agent turn it was reacting to,
 scored against a judgment lexicon, deduped, and written to `state/evidence/`.
 
-The first pass found 1,427 distinct judgment events across 1,290 conversations.
+The first pass found 1,398 distinct judgment events across 1,290 conversations.
 Every rule in the knowledge files carries an evidence tag pointing back at them:
 
 - `[observed Nx]` - extracted from N distinct real sessions, dated
