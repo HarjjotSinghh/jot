@@ -53,3 +53,10 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Video project: keep the compositions and plans, drop the build output.
+video/videos/*/renders/
+video/videos/*/snapshots/
+video/videos/*/.hyperframes/
+video/videos/*/node_modules/
+video/**/*.mp4

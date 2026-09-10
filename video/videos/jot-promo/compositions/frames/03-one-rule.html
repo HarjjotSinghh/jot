@@ -1,0 +1,286 @@
+<template>
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("assets/fonts/Inter-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Inter";
+    src: url("assets/fonts/Inter-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Cascadia Mono";
+    src: url("assets/fonts/CascadiaMono.ttf") format("truetype");
+    font-weight: 200 700;
+    font-style: normal;
+    font-display: block;
+  }
+
+  #root {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    container-type: size;
+    font-family: "Inter", sans-serif;
+    color: #1A1A1A;
+  }
+
+  #root .clip {
+    position: absolute;
+    inset: 0;
+  }
+
+  #root .ground {
+    background: #FAFAFA;
+  }
+
+  /* ---- left half: raw evidence, holds for the whole shot ---- */
+
+  #root .left-col {
+    position: absolute;
+    left: 80px;
+    top: 170px;
+    width: 820px;
+  }
+
+  #root .log-header {
+    font-family: "Cascadia Mono", monospace;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: #6B6B6B;
+    margin: 0 0 16px 0;
+    opacity: 0;
+  }
+
+  #root .log-header .date-left {
+    color: #6B6B6B;
+  }
+
+  #root .log-line {
+    font-family: "Cascadia Mono", monospace;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 1.6;
+    color: #6B6B6B;
+    width: 44ch;
+    margin: 0;
+    opacity: 0;
+  }
+
+  /* ---- connector: hairline draw from evidence to the file ---- */
+
+  #root .connector-wrap {
+    position: absolute;
+    left: 872px;
+    top: 178px;
+    width: 68px;
+    height: 20px;
+  }
+
+  #root .connector-wrap svg {
+    display: block;
+    overflow: visible;
+  }
+
+  /* ---- right half: the rendered rule file ---- */
+
+  #root .card {
+    position: absolute;
+    left: 940px;
+    top: 170px;
+    width: 900px;
+    background: #FAFAFA;
+    border: 1px solid #D4D4D4;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.08), 0 4px 16px rgba(26, 26, 26, 0.04);
+    overflow: hidden;
+    opacity: 0;
+    transform-origin: 50% 50%;
+  }
+
+  #root .card-chrome {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 28px;
+    background: rgba(26, 26, 26, 0.035);
+    border-bottom: 1px solid #D4D4D4;
+  }
+
+  #root .card-filename {
+    font-family: "Cascadia Mono", monospace;
+    font-weight: 400;
+    font-size: 26px;
+    letter-spacing: 0.02em;
+    color: #1A1A1A;
+  }
+
+  #root .card-body {
+    padding: 32px 40px 36px 40px;
+  }
+
+  #root .card-heading {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: #1A1A1A;
+    margin: 0 0 24px 0;
+    max-width: 820px;
+    opacity: 0;
+  }
+
+  #root .card-rule {
+    height: 1px;
+    background: #D4D4D4;
+    margin: 0 0 20px 0;
+    opacity: 0;
+  }
+
+  #root .rule-line {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 27px;
+    line-height: 1.5;
+    color: #6B6B6B;
+    margin: 0 0 16px 0;
+    opacity: 0;
+  }
+
+  #root .rule-line:last-child {
+    margin-bottom: 0;
+  }
+
+  #root .rule-label {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  #root .date-right {
+    color: #6B6B6B;
+  }
+</style>
+
+<div
+  id="root"
+  data-composition-id="03-one-rule"
+  data-width="1920"
+  data-height="1080"
+  data-start="0"
+  data-duration="8.5"
+>
+  <div class="clip ground" data-start="0" data-duration="8.5" data-track-index="0"></div>
+
+  <div class="clip" data-start="0" data-duration="8.5" data-track-index="1">
+
+    <div class="left-col">
+      <p class="log-header">claude - <span class="date-left">2026-09-01</span></p>
+      <p class="log-line">wait which agents/models are we using for the general-purpose tasks? pls make sure they're sonnet 5, never opus or fable (burns my weekly usage and session usage a lot), remember this pls</p>
+    </div>
+
+    <div class="connector-wrap">
+      <svg width="68" height="20" viewBox="0 0 68 20" xmlns="http://www.w3.org/2000/svg">
+        <line
+          id="03-one-rule-connector-line"
+          x1="0"
+          y1="10"
+          x2="68"
+          y2="10"
+          fill="none"
+          stroke="#D4D4D4"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+
+    <div class="card">
+      <div class="card-chrome">
+        <span class="card-filename">AGENTIC.md</span>
+      </div>
+      <div class="card-body">
+        <h1 class="card-heading">Subagents are Sonnet 5. Never Opus. Never Fable.</h1>
+        <div class="card-rule"></div>
+        <p class="rule-line"><span class="rule-label">Do:</span> Every general-purpose subagent runs on Sonnet 5.</p>
+        <p class="rule-line"><span class="rule-label">Because:</span> Opus and Fable burn his weekly usage fast, and the fan-out is where the volume is.</p>
+        <p class="rule-line"><span class="rule-label">Not when:</span> He explicitly asks for a stronger model on one hard call.</p>
+        <p class="rule-line"><span class="rule-label">Evidence:</span> [stated 2x] <span class="date-right">2026-09-01</span></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-composition-id="03-one-rule"]');
+
+    var logHeader = root.querySelector(".log-header");
+    var logLine = root.querySelector(".log-line");
+    var card = root.querySelector(".card");
+    var heading = root.querySelector(".card-heading");
+    var rule = root.querySelector(".card-rule");
+    var lines = root.querySelectorAll(".rule-line");
+    var dateLeft = root.querySelector(".date-left");
+    var dateRight = root.querySelector(".date-right");
+
+    // svg-path-draw setup: measure the real geometry, never guess it.
+    var connector = document.getElementById("03-one-rule-connector-line");
+    var connectorLen = connector.getTotalLength();
+    connector.style.strokeDasharray = connectorLen;
+    connector.style.strokeDashoffset = connectorLen;
+
+    var tl = gsap.timeline({ paused: true });
+
+    // Scene 1 (0.0-2.2s): the evidence - header, then the raw log line.
+    // This half stays on screen, unchanged, for the rest of the shot.
+    tl.fromTo(logHeader, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3273, ease: "power2.out" }, 0.0364);
+    tl.fromTo(logLine, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.2182);
+
+    // Scene 2 (2.2-3.4s): hairline connector draws left to right, 900ms.
+    tl.to(connector, { strokeDashoffset: 0, duration: 0.6545, ease: "power2.out" }, 1.6);
+
+    // Scene 3 (3.4-4.6s): the file card springs in (spring-pop-entrance - smooth
+    // power3 settle, no bounce). Body still empty.
+    tl.fromTo(
+      card,
+      { opacity: 0, scale: 0, y: 20 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.3636, ease: "power3.out" },
+      2.4727,
+    );
+
+    // Scene 4 (4.6-9.0s): heading, then the hairline rule, then the four labelled
+    // lines cascade in 520ms apart (waterfall-entry - binary opacity via tl.set,
+    // whip up from below, power4.out, no fade).
+    tl.set(heading, { opacity: 1, y: 64 }, 3.3455);
+    tl.to(heading, { y: 0, duration: 0.2036, ease: "power4.out" }, 3.3455);
+
+    tl.fromTo(rule, { opacity: 0 }, { opacity: 1, duration: 0.2182, ease: "power1.out" }, 3.6);
+
+    var lineStarts = [3.7818, 4.16, 4.5382, 4.9164];
+    lines.forEach(function (line, i) {
+      var t = lineStarts[i];
+      tl.set(line, { opacity: 1, y: 44 }, t);
+      tl.to(line, { y: 0, duration: 0.1455, ease: "power4.out" }, t);
+    });
+
+    // Scene 5 (9.0-11.0s): the one cobalt moment - both dates mark together,
+    // tying the raw line to the rule it became. Holds to the end.
+    tl.to([dateLeft, dateRight], { color: "#2563C9", duration: 0.2909, ease: "power2.out" }, 6.5455);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["03-one-rule"] = tl;
+  })();
+</script>
+</template>

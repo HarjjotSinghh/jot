@@ -425,7 +425,13 @@ def default_sources() -> dict[str, object]:
     home = Path.home()
     appdata = Path(os.environ.get("APPDATA", home / "AppData/Roaming"))
     return {
-        "claude": [home / ".claude/projects"],
+        # Claude Code's store can be relocated. Both known locations are read by
+        # default so the bare command gives the full corpus; a partial run that
+        # silently overwrites a complete one is worse than no run at all.
+        "claude": [
+            home / ".claude/projects",
+            Path("D:/Projects/hop-10-lab/claude/projects"),
+        ],
         "codex": home / ".codex/sessions",
         "grok": home / ".grok/sessions",
         "gemini": home / ".gemini/tmp",

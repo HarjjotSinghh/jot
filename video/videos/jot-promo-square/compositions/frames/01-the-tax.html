@@ -1,0 +1,224 @@
+<template>
+<div id="root" data-composition-id="01-the-tax" data-width="1080" data-height="1080" data-duration="5">
+<style>
+@font-face {
+  font-family: "Cascadia Mono";
+  src: url("assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Cascadia Mono", monospace;
+}
+
+#root .clip {
+  position: absolute;
+  inset: 0;
+}
+
+#root .tax-base {
+  position: absolute;
+  inset: 0;
+  background: #FAFAFA;
+}
+
+#root .tax-ground {
+  position: absolute;
+  inset: 0;
+  background: #151618;
+}
+
+#root .tax-line-wrap {
+  position: absolute;
+  left: 72px;
+  top: 382px;
+  width: 936px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+#root .tax-line-text {
+  font-family: "Cascadia Mono", monospace;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: #FAFAFA;
+  white-space: pre;
+}
+
+#root .tax-cursor {
+  display: inline-block;
+  width: 11px;
+  height: 41px;
+  margin-left: 4px;
+  background: #FAFAFA;
+}
+
+#root .tax-label {
+  position: absolute;
+  left: 72px;
+  top: 300px;
+  font-family: "Cascadia Mono", monospace;
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: 0.02em;
+  color: rgba(250, 250, 250, 0.72);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+#root .tax-col {
+  position: absolute;
+  left: 72px;
+  width: 936px;
+  text-align: center;
+  font-family: "Cascadia Mono", monospace;
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: 0.02em;
+  color: rgba(250, 250, 250, 0.72);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+#root .tax-col[data-row="1"] { top: 510px; }
+#root .tax-col[data-row="2"] { top: 590px; }
+#root .tax-col[data-row="3"] { top: 670px; }
+#root .tax-col[data-row="4"] { top: 750px; }
+</style>
+
+<div class="clip" data-start="0" data-duration="5" data-track-index="0">
+  <div class="tax-base"></div>
+</div>
+
+<div class="clip" data-start="0" data-duration="5" data-track-index="1">
+  <div class="tax-ground"></div>
+</div>
+
+<div class="clip" data-start="0" data-duration="5" data-track-index="2">
+  <div class="tax-line-wrap">
+    <span class="tax-line-text" id="tax-line-text"></span><span class="tax-cursor" id="tax-cursor"></span>
+  </div>
+
+  <div class="tax-label" id="tax-label"></div>
+
+  <div class="tax-col" data-row="1" id="tax-col-1">claude code</div>
+  <div class="tax-col" data-row="2" id="tax-col-2">codex</div>
+  <div class="tax-col" data-row="3" id="tax-col-3">cursor</div>
+  <div class="tax-col" data-row="4" id="tax-col-4">grok</div>
+</div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  var tl = gsap.timeline({ paused: true });
+
+  var lineTextEl = document.getElementById("tax-line-text");
+  var cursorEl = document.getElementById("tax-cursor");
+  var labelEl = document.getElementById("tax-label");
+
+  var FULL_LINE = "never opus or fable - burns my weekly usage";
+
+  /* Scene 1 (0.0-1.6s): near-black ground. One mono line types in at
+     optical centre, left-aligned in a 900px measure. Caret blinks.
+     Nothing else on screen. Plain typing, no edits - smooth slice. */
+  var typeDriver = { v: 0 };
+  tl.to(
+    typeDriver,
+    {
+      v: FULL_LINE.length,
+      duration: 0.6429,
+      ease: "power1.inOut",
+      onUpdate: function () {
+        lineTextEl.textContent = FULL_LINE.substring(0, Math.floor(typeDriver.v));
+      },
+    },
+    0
+  );
+
+  /* Caret: deterministic sin square-wave blink, runs the full 7s. */
+  var blink = { p: 0 };
+  var BLINK_CYCLES = 10;
+  tl.to(
+    blink,
+    {
+      p: Math.PI * 2 * BLINK_CYCLES,
+      duration: 4.5,
+      ease: "none",
+      onUpdate: function () {
+        cursorEl.style.opacity = Math.sin(blink.p) > 0 ? "1" : "0";
+      },
+    },
+    0
+  );
+
+  /* Scene 2 (1.6-3.4s): a small label springs in above the line -
+     "claude code". spring-pop-entrance, 180ms, from y+8.
+     Scene 3 (3.4-5.2s): the label token swaps in place - codex, then
+     cursor, then grok - hard cuts at 450ms intervals. The mono line
+     beneath never moves. This is the signature move: the corrected
+     instruction stays fixed, only the agent name keeps changing. */
+  var LABEL_SEQ = [
+    { t: 0, text: "" },
+    { t: 1.0286, text: "claude code" },
+    { t: 2.1857, text: "codex" },
+    { t: 2.475, text: "cursor" },
+    { t: 2.7643, text: "grok" },
+    { t: 3.3429, text: "" },
+  ];
+  function textAt(seq, time) {
+    for (var i = seq.length - 1; i >= 0; i--) {
+      if (time >= seq[i].t) return seq[i].text;
+    }
+    return "";
+  }
+  var labelDriver = { t: 0 };
+  tl.to(
+    labelDriver,
+    {
+      t: 4.5,
+      duration: 4.5,
+      ease: "none",
+      onUpdate: function () {
+        labelEl.textContent = textAt(LABEL_SEQ, labelDriver.t);
+      },
+    },
+    0
+  );
+
+  /* The label container arrives once and holds fixed in place through
+     every token swap - only the printed word underneath it changes. */
+  tl.fromTo(
+    labelEl,
+    { opacity: 0, scale: 0, y: 8 },
+    { opacity: 1, scale: 1, y: 0, duration: 0.1157, ease: "power3.out" },
+    1.0286
+  );
+  tl.to(labelEl, { opacity: 0, duration: 0.0964, ease: "power1.out" }, 3.3429);
+
+  /* Scene 4 (5.2-7.0s): the four labels are now stacked as a quiet
+     column at right, all four visible at once. Held read, no camera. */
+  var cols = ["#tax-col-1", "#tax-col-2", "#tax-col-3", "#tax-col-4"];
+  cols.forEach(function (sel, i) {
+    tl.fromTo(
+      sel,
+      { opacity: 0, scale: 0, y: 12 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.3214, ease: "power3.out" },
+      3.3429 + i * 0.045
+    );
+  });
+
+  window.__timelines["01-the-tax"] = tl;
+})();
+</script>
+</div>
+</template>
