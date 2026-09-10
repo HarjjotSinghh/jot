@@ -1,0 +1,26 @@
+{
+  "provider": "heygen",
+  "speed": 1,
+  "lines": [
+    {
+      "id": "01",
+      "text": "You have told your agents the same thing a hundred times."
+    },
+    {
+      "id": "02",
+      "text": "Every one of those corrections is sitting in a log file. This reads all of them."
+    },
+    {
+      "id": "03",
+      "text": "Then test it blind against yourself. Ten real decisions, answers sealed."
+    },
+    {
+      "id": "04",
+      "text": "Rules mined from the logs scored full marks. Rules I reasoned into scored zero."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "88bb9ee1c81b466eb2a08fdde86d3619"
+}

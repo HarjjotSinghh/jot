@@ -1,6 +1,6 @@
 ---
 format: 1920x1080
-duration: 31s
+duration: 31.7s
 message: Your engineering judgment is already written down, in your coding agents' logs. jot extracts it into a skill any agent can load.
 arc: Hook -> Mechanism -> Proof -> Payoff
 audience: Developers running several coding agents who are tired of re-explaining the same preferences to each one
@@ -139,7 +139,7 @@ Scene 6 (8.0-10.0s): held. No camera. The three numbers read as a column.
 
 - status: animated
 - src: compositions/frames/05-provenance.html
-- duration: 5.5s
+- duration: 6.2s
 - transition_in: crossfade
 - scene: Mined rules scored full marks, reasoned-in rules scored zero, then the install line
 - voiceover: "Every rule mined from the logs scored full marks. Every rule I reasoned my way into scored zero."

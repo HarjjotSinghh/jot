@@ -57,7 +57,7 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="31"
+      data-duration="31.7"
       data-width="1920"
       data-height="1080"
     >
@@ -70,6 +70,14 @@
         data-duration="5"
         data-track-index="0"
       ></div>
+      <audio
+        id="el-01-the-tax-voice"
+        src="assets/voice/01.wav"
+        data-start="0"
+        data-duration="4.5"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
       <div
         id="el-02-the-logs"
@@ -80,6 +88,14 @@
         data-duration="7.5"
         data-track-index="1"
       ></div>
+      <audio
+        id="el-02-the-logs-voice"
+        src="assets/voice/02.wav"
+        data-start="4.5"
+        data-duration="7"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
       <div
         id="el-03-one-rule"
@@ -90,6 +106,14 @@
         data-duration="8.5"
         data-track-index="0"
       ></div>
+      <audio
+        id="el-03-one-rule-voice"
+        src="assets/voice/03.wav"
+        data-start="11.5"
+        data-duration="8"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
       <div
         id="el-04-benchmark"
@@ -100,6 +124,14 @@
         data-duration="6.5"
         data-track-index="1"
       ></div>
+      <audio
+        id="el-04-benchmark-voice"
+        src="assets/voice/04.wav"
+        data-start="19.5"
+        data-duration="6"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
       <div
         id="el-05-provenance"
@@ -107,20 +139,28 @@
         data-composition-id="05-provenance"
         data-composition-src="compositions/frames/05-provenance.html"
         data-start="25.5"
-        data-duration="5.5"
+        data-duration="6.2"
         data-track-index="0"
       ></div>
+      <audio
+        id="el-05-provenance-voice"
+        src="assets/voice/05.wav"
+        data-start="25.5"
+        data-duration="6.2"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
 
 
-      <div id="cap-1" class="cap cap-dark clip" data-start="1.2" data-duration="3.1" data-track-index="2">You have told your agents the same thing a hundred times</div>
-      <div id="cap-2" class="cap clip" data-start="5.3" data-duration="2.9" data-track-index="2">Every one of those corrections is sitting in a log file</div>
-      <div id="cap-3" class="cap clip" data-start="8.2" data-duration="3.1" data-track-index="2">This reads all of them</div>
-      <div id="cap-4" class="cap clip" data-start="12.3" data-duration="2.7" data-track-index="2">One thing you typed once becomes a rule</div>
-      <div id="cap-5" class="cap clip" data-start="15.0" data-duration="4.3" data-track-index="2">with its reason, and the case where it does not apply</div>
-      <div id="cap-6" class="cap clip" data-start="20.2" data-duration="2.6" data-track-index="2">Then test it blind against yourself</div>
-      <div id="cap-7" class="cap clip" data-start="22.8" data-duration="2.5" data-track-index="2">Ten real decisions, answers sealed</div>
-      <div id="cap-8" class="cap clip" data-start="26.1" data-duration="2.3" data-track-index="2">Every rule mined from the logs scored full marks</div>
-      <div id="cap-9" class="cap clip" data-start="28.4" data-duration="1.9" data-track-index="2">Every rule I reasoned my way into scored zero</div>
+      <div id="cap-1" class="cap cap-dark clip" data-start="0.119" data-duration="3.24" data-track-index="2">You have told your agents the same thing a hundred times.</div>
+      <div id="cap-2" class="cap clip" data-start="4.579" data-duration="3.1" data-track-index="2">Every one of those corrections is sitting in a log file.</div>
+      <div id="cap-3" class="cap clip" data-start="7.699" data-duration="1.32" data-track-index="2">This reads all of them.</div>
+      <div id="cap-4" class="cap clip" data-start="11.619" data-duration="2.42" data-track-index="2">One thing you typed once becomes a rule.</div>
+      <div id="cap-5" class="cap clip" data-start="14.259" data-duration="3.22" data-track-index="2">With its reason, and the case where it does not apply.</div>
+      <div id="cap-6" class="cap clip" data-start="19.579" data-duration="2.401" data-track-index="2">Then test it blind against yourself.</div>
+      <div id="cap-7" class="cap clip" data-start="21.959" data-duration="2.801" data-track-index="2">Ten real decisions, answers sealed.</div>
+      <div id="cap-8" class="cap clip" data-start="25.619" data-duration="2.96" data-track-index="2">Rules mined from the logs scored full marks.</div>
+      <div id="cap-9" class="cap clip" data-start="28.599" data-duration="2.48" data-track-index="2">Rules I reasoned into scored zero.</div>
     </div>
 
     <script>
@@ -136,28 +176,28 @@
         tl.fromTo("#el-04-benchmark", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 19.5);
         tl.to("#el-04-benchmark", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 25.5);
         tl.fromTo("#el-05-provenance", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 25.5);
-        tl.to({}, { duration: 31 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+        tl.to({}, { duration: 31.7 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
       })();
-      // -- captions (cued off frame windows; this project is silent) --
+      // -- captions, cued to the spoken words in audio_meta.json --
       (function () { var tl = window.__timelines["main"];
-        tl.fromTo("#cap-1", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 1.2);
-        tl.to("#cap-1", { opacity: 0, duration: 0.16, ease: "power2.in" }, 4.14);
-        tl.fromTo("#cap-2", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 5.3);
-        tl.to("#cap-2", { opacity: 0, duration: 0.16, ease: "power2.in" }, 8.04);
-        tl.fromTo("#cap-3", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 8.2);
-        tl.to("#cap-3", { opacity: 0, duration: 0.16, ease: "power2.in" }, 11.14);
-        tl.fromTo("#cap-4", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 12.3);
-        tl.to("#cap-4", { opacity: 0, duration: 0.16, ease: "power2.in" }, 14.84);
-        tl.fromTo("#cap-5", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 15.0);
-        tl.to("#cap-5", { opacity: 0, duration: 0.16, ease: "power2.in" }, 19.14);
-        tl.fromTo("#cap-6", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 20.2);
-        tl.to("#cap-6", { opacity: 0, duration: 0.16, ease: "power2.in" }, 22.64);
-        tl.fromTo("#cap-7", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 22.8);
-        tl.to("#cap-7", { opacity: 0, duration: 0.16, ease: "power2.in" }, 25.14);
-        tl.fromTo("#cap-8", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 26.1);
-        tl.to("#cap-8", { opacity: 0, duration: 0.16, ease: "power2.in" }, 28.24);
-        tl.fromTo("#cap-9", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 28.4);
-        tl.to("#cap-9", { opacity: 0, duration: 0.16, ease: "power2.in" }, 30.14);
+        tl.fromTo("#cap-1", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.119);
+        tl.to("#cap-1", { opacity: 0, duration: 0.14, ease: "power2.in" }, 3.219);
+        tl.fromTo("#cap-2", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 4.579);
+        tl.to("#cap-2", { opacity: 0, duration: 0.14, ease: "power2.in" }, 7.539);
+        tl.fromTo("#cap-3", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 7.699);
+        tl.to("#cap-3", { opacity: 0, duration: 0.14, ease: "power2.in" }, 8.879);
+        tl.fromTo("#cap-4", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 11.619);
+        tl.to("#cap-4", { opacity: 0, duration: 0.14, ease: "power2.in" }, 13.899);
+        tl.fromTo("#cap-5", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 14.259);
+        tl.to("#cap-5", { opacity: 0, duration: 0.14, ease: "power2.in" }, 17.339);
+        tl.fromTo("#cap-6", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 19.579);
+        tl.to("#cap-6", { opacity: 0, duration: 0.14, ease: "power2.in" }, 21.84);
+        tl.fromTo("#cap-7", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 21.959);
+        tl.to("#cap-7", { opacity: 0, duration: 0.14, ease: "power2.in" }, 24.62);
+        tl.fromTo("#cap-8", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 25.619);
+        tl.to("#cap-8", { opacity: 0, duration: 0.14, ease: "power2.in" }, 28.439);
+        tl.fromTo("#cap-9", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 28.599);
+        tl.to("#cap-9", { opacity: 0, duration: 0.14, ease: "power2.in" }, 30.939);
       })();
     </script>
   </body>

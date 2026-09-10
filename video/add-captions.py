@@ -1,46 +1,25 @@
 #!/usr/bin/env python3
-"""Add a burned-in caption track to an assembled HyperFrames index.
+"""Add a burned-in caption track cued to the actual spoken words.
 
-The shipped caption pipeline derives word timings from `audio_meta.json`, which
-only exists when a project has narration. This project is silent by design, so
-that file is never written and `captions.mjs` silently no-ops - which is how a
-video that was specified as "silent with burned-in captions" ended up with no
-text at all.
+The shipped captions.mjs exits 0 and writes nothing here, with no diagnostic, so
+this builds the track directly from `audio_meta.json` - which carries per-word
+start/end times from the TTS pass - and from the frame windows in the assembled
+index.
 
-Captions here are cued off the frame windows in the assembled index instead.
-Each line is its own `class="clip"` element on its own track, faded by the main
-timeline, sitting in the band below the content keep-out.
+Each spoken line is split at its sentence boundary and each half becomes its own
+caption, timed from the first word of that half to shortly after its last. That
+is the part hand-guessed windows could not do: a caption now appears exactly when
+the sentence is spoken.
+
+Run after assemble-index, which regenerates index.html and drops this layer.
 """
 
 from __future__ import annotations
 
+import json
 import pathlib
 import re
 import sys
-
-# (start, end, text). Times are absolute seconds on the master timeline, cued to
-# sit inside their frame's window and clear before the next crossfade.
-MASTER = [
-    (1.20, 4.30, "You have told your agents the same thing a hundred times"),
-    (5.30, 8.20, "Every one of those corrections is sitting in a log file"),
-    (8.20, 11.30, "This reads all of them"),
-    (12.30, 15.00, "One thing you typed once becomes a rule"),
-    (15.00, 19.30, "with its reason, and the case where it does not apply"),
-    (20.20, 22.80, "Then test it blind against yourself"),
-    (22.80, 25.30, "Ten real decisions, answers sealed"),
-    (26.10, 28.40, "Every rule mined from the logs scored full marks"),
-    (28.40, 30.30, "Every rule I reasoned my way into scored zero"),
-]
-
-SQUARE = [
-    (1.20, 4.30, "You have told your agents the same thing a hundred times"),
-    (5.30, 8.20, "Every one of those corrections is sitting in a log file"),
-    (8.20, 11.30, "This reads all of them"),
-    (12.30, 14.80, "Then test it blind against yourself"),
-    (14.80, 17.30, "Ten real decisions, answers sealed"),
-    (18.10, 20.30, "Every rule mined from the logs scored full marks"),
-    (20.30, 22.30, "Every rule I reasoned my way into scored zero"),
-]
 
 CSS = """
       /* Captions. Plain type on the ground colour, no pill: the preset's
@@ -64,62 +43,94 @@ CSS = """
       .cap-dark { color: #FAFAFA; }
 """
 
+TAIL = 0.28   # how long a caption lingers past its last word
+LEAD = 0.10   # how early it appears before the first word
 
-def build(index: pathlib.Path, cues, top, width, size, dark_until):
+
+def frame_starts(index_html: str) -> dict[int, float]:
+    """Absolute start time of each frame, in storyboard order."""
+    starts = {}
+    for i, m in enumerate(
+        re.finditer(r'data-composition-src="compositions/frames/[^"]+"\s*\n\s*data-start="([0-9.]+)"',
+                    index_html), 1):
+        starts[i] = float(m.group(1))
+    return starts
+
+
+def split_sentences(words):
+    """Split a line's words into sentence groups, keeping their timings."""
+    groups, cur = [], []
+    for w in words:
+        cur.append(w)
+        if re.search(r"[.?!]$", w["text"]):
+            groups.append(cur)
+            cur = []
+    if cur:
+        groups.append(cur)
+    return groups
+
+
+def build(project: pathlib.Path, top: int, width: int, size: int, dark_frames: set[int]):
+    index = project / "index.html"
+    meta = project / "audio_meta.json"
+    if not meta.exists():
+        return "no audio_meta.json - run audio.mjs first"
+
     html = index.read_text(encoding="utf-8")
     if 'class="cap"' in html:
-        return "already has captions, skipped"
+        return "already captioned, skipped"
 
-    html = html.replace(
-        "    </style>", CSS % {"top": top, "width": width, "size": size} + "    </style>", 1
-    )
+    starts = frame_starts(html)
+    voices = json.loads(meta.read_text(encoding="utf-8"))["voices"]
 
-    divs = []
-    tweens = []
-    for i, (a, b, text) in enumerate(cues, 1):
-        # Frame 1 is the only shot on a dark ground; its caption inverts.
-        cls = "cap cap-dark" if b <= dark_until else "cap"
-        divs.append(
-            f'      <div id="cap-{i}" class="{cls} clip" data-start="{a}" '
-            f'data-duration="{round(b - a, 3)}" data-track-index="2">{text}</div>'
-        )
-        # In fast, out faster: a caption that lingers reads as a subtitle bug.
+    cues = []
+    for v in voices:
+        base = starts.get(v["frame"])
+        if base is None:
+            continue
+        for grp in split_sentences(v["words"]):
+            text = " ".join(w["text"] for w in grp).strip()
+            a = round(base + grp[0]["start"] - LEAD, 3)
+            b = round(base + grp[-1]["end"] + TAIL, 3)
+            cues.append((a, b, text, v["frame"]))
+
+    html = html.replace("    </style>",
+                        CSS % {"top": top, "width": width, "size": size} + "    </style>", 1)
+
+    divs, tweens = [], []
+    for i, (a, b, text, frame) in enumerate(cues, 1):
+        cls = "cap cap-dark" if frame in dark_frames else "cap"
+        divs.append(f'      <div id="cap-{i}" class="{cls} clip" data-start="{a}" '
+                    f'data-duration="{round(b - a, 3)}" data-track-index="2">{text}</div>')
         tweens.append(
             f'        tl.fromTo("#cap-{i}", {{ opacity: 0, y: 8 }}, '
-            f'{{ opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }}, {a});\n'
-            f'        tl.to("#cap-{i}", {{ opacity: 0, duration: 0.16, '
-            f'ease: "power2.in" }}, {round(b - 0.16, 3)});'
-        )
+            f'{{ opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }}, {a});\n'
+            f'        tl.to("#cap-{i}", {{ opacity: 0, duration: 0.14, ease: "power2.in" }}, '
+            f'{round(b - 0.14, 3)});')
 
-    html = html.replace(
-        "\n    </div>\n\n    <script>",
-        "\n\n" + "\n".join(divs) + "\n    </div>\n\n    <script>",
-        1,
-    )
+    html = html.replace("\n    </div>\n\n    <script>",
+                        "\n\n" + "\n".join(divs) + "\n    </div>\n\n    <script>", 1)
 
-    block = (
-        "      // -- captions (cued off frame windows; this project is silent) --\n"
-        "      (function () { var tl = window.__timelines[\"main\"];\n"
-        + "\n".join(tweens)
-        + "\n      })();\n"
-    )
-    html = html.replace(
-        '        tl.to({}, { duration:', block + '      (function () { var tl = window.__timelines["main"];\n'
-        '        tl.to({}, { duration:', 1
-    )
+    block = ('      // -- captions, cued to the spoken words in audio_meta.json --\n'
+             '      (function () { var tl = window.__timelines["main"];\n'
+             + "\n".join(tweens) + "\n      })();\n")
+    # Append after the transitions IIFE closes, never inside it.
+    anchor = re.search(r"([ \t]*tl\.to\(\{\}, \{ duration: [0-9.]+ \}, 0\);[^\n]*\n[ \t]*\}\)\(\);\n)", html)
+    if not anchor:
+        return "could not find the timeline anchor"
+    html = html.replace(anchor.group(1), anchor.group(1) + block, 1)
+
     index.write_text(html, encoding="utf-8")
-    return f"{len(cues)} captions injected"
+    opens, closes = html.count("(function ()"), html.count("})();")
+    return (f"{len(cues)} captions, IIFE {opens}/{closes} "
+            f"{'balanced' if opens == closes else 'MISMATCH'}")
 
 
 def main() -> int:
     root = pathlib.Path(__file__).resolve().parent / "videos"
-    jobs = [
-        ("jot-promo", MASTER, 946, 1500, 40, 4.5),
-        ("jot-promo-square", SQUARE, 952, 940, 36, 4.5),
-    ]
-    for proj, cues, top, width, size, dark in jobs:
-        idx = root / proj / "index.html"
-        print(f"{proj}: {build(idx, cues, top, width, size, dark)}")
+    for proj, top, width, size in (("jot-promo", 946, 1500, 40),
+                                   ("jot-promo-square", 952, 940, 36)):
+        print(f"{proj}: {build(root / proj, top, width, size, dark_frames={1})}")
     return 0
 
 
