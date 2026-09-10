@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>jot banner</title>
+<style>
+  /* ------------------------------------------------------------------
+     Fonts are vendored into ./fonts so the render is deterministic and
+     does not depend on what happens to be installed on the machine.
+     Manrope + Inter + JetBrains Mono is the same trio the portfolio's
+     OG cards ship with, so this banner sits in the same family as every
+     other card of his that a reader has already seen.
+     ------------------------------------------------------------------ */
+  @font-face { font-family: "Manrope"; src: url("fonts/manrope-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: block; }
+  @font-face { font-family: "Manrope"; src: url("fonts/manrope-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+  @font-face { font-family: "InterVend"; src: url("fonts/inter-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+  @font-face { font-family: "InterVend"; src: url("fonts/inter-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+  @font-face { font-family: "InterVend"; src: url("fonts/inter-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: block; }
+  @font-face { font-family: "JBMono"; src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+  @font-face { font-family: "JBMono"; src: url("fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+
+  :root {
+    /* Portfolio tokens, lifted verbatim from app/og-shared.tsx. */
+    --ink:      #0A0A0A;
+    --ink-2:    #4A4A4A;
+    --ink-3:    #6B6B6B;
+    --line:     #E6E6E6;
+    --line-hi:  #D4D4D4;
+    --surface:  #F4F4F4;
+    --paper:    #FFFFFF;
+    --accent:   #2563C9;
+
+    /* The one dark region: the compiled artefact. */
+    --slab:      #111111;
+    --slab-line: #2A2A2A;
+    --slab-ink:  #FAFAFA;
+    --slab-mid:  #9A9A9A;
+    --slab-acc:  #7BA7F0;
+
+    /* Every size is a multiple of --u, so one number rescales the sheet. */
+    --u: calc(100vh / 900);
+    --gut: calc(30 * var(--u));
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    font-family: "InterVend", -apple-system, "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    overflow: hidden;
+  }
+
+  /* ---- the hatch field ------------------------------------------------
+     His site paints a -45deg hairline field behind the framed content.
+     Drawn as an SVG pattern rather than a CSS stripe so the line weight
+     stays exactly 1 device pixel at every export size.
+     -------------------------------------------------------------------- */
+  .field {
+    position: absolute; inset: 0;
+    background-color: var(--paper);
+    background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'>\
+<path d='M-4 4 L4 -4 M0 16 L16 0 M12 20 L20 12' stroke='rgba(10,10,10,0.09)' stroke-width='1'/>\
+</svg>");
+    background-size: 16px 16px;
+  }
+
+  /* ---- the sheet ------------------------------------------------------ */
+  .sheet {
+    position: absolute;
+    inset: var(--gut);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: calc(34 * var(--u)) calc(40 * var(--u)) calc(36 * var(--u));
+    display: flex; flex-direction: column;
+  }
+  /* Corner Ls: stem and arm butted, never crossing. Same mark as the OG card. */
+  .cnr { position: absolute; width: calc(26 * var(--u)); height: calc(26 * var(--u)); }
+  .cnr::before, .cnr::after { content: ""; position: absolute; background: rgba(10,10,10,0.5); }
+  .cnr::before { width: calc(1.6 * var(--u)); height: 100%; }
+  .cnr::after  { height: calc(1.6 * var(--u)); width: 100%; }
+  .cnr.tl { top: -1px; left: -1px; }
+  .cnr.tr { top: -1px; right: -1px; }
+  .cnr.bl { bottom: -1px; left: -1px; }
+  .cnr.br { bottom: -1px; right: -1px; }
+  .cnr.tl::before, .cnr.tr::before { top: 0; } .cnr.bl::before, .cnr.br::before { bottom: 0; }
+  .cnr.tl::after,  .cnr.bl::after  { left: 0; } .cnr.tr::after,  .cnr.br::after  { right: 0; }
+  .cnr.tl::before, .cnr.bl::before { left: 0; } .cnr.tr::before, .cnr.br::before { right: 0; }
+  .cnr.tl::after,  .cnr.tr::after  { top: 0; } .cnr.bl::after,  .cnr.br::after  { bottom: 0; }
+
+  /* ---- masthead ------------------------------------------------------- */
+  .top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: calc(24 * var(--u));
+    padding-bottom: calc(20 * var(--u));
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: baseline; gap: calc(14 * var(--u)); }
+  .mark {
+    font-family: "Manrope", sans-serif; font-weight: 700;
+    font-size: calc(40 * var(--u)); line-height: 0.9;
+    letter-spacing: -0.035em; color: var(--accent);
+  }
+  .rule-v { width: 1px; align-self: stretch; background: var(--line-hi); }
+  .kick {
+    font-family: "JBMono", ui-monospace, monospace; font-weight: 500;
+    font-size: calc(13 * var(--u)); letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .repo {
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(13 * var(--u)); color: var(--ink-3); white-space: nowrap;
+  }
+
+  /* ---- body: argument on the left, the machine on the right ----------- */
+  .body {
+    flex: 1; min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1.32fr;
+    grid-template-rows: 1fr auto;
+    column-gap: calc(46 * var(--u)); row-gap: calc(26 * var(--u));
+    padding-top: calc(30 * var(--u));
+  }
+  .say  { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; }
+  .flow { grid-column: 2; grid-row: 1 / span 2; }
+  .cta  { grid-column: 1; grid-row: 2; }
+
+  h1 {
+    font-family: "Manrope", sans-serif; font-weight: 600;
+    font-size: calc(47 * var(--u)); line-height: 1.13;
+    letter-spacing: -0.028em; text-wrap: balance;
+  }
+  h1 .set { color: var(--ink-2); font-weight: 600; }
+  .deck {
+    margin-top: calc(22 * var(--u));
+    font-size: calc(18.5 * var(--u)); line-height: 1.56;
+    color: var(--ink-2); letter-spacing: -0.008em;
+    max-width: 46ch; text-wrap: pretty;
+  }
+  .deck b { color: var(--ink); font-weight: 500; }
+
+  /* Numbers as a spec table: figures right-aligned in their own column so
+     the decimal spine reads straight down, labels hung beside them. */
+  .facts { margin-top: auto; display: grid; gap: calc(1 * var(--u)); }
+  .facts .cap { margin-bottom: calc(11 * var(--u)); }
+  .fact {
+    display: grid; grid-template-columns: auto 1fr;
+    align-items: baseline; gap: calc(16 * var(--u));
+    padding: calc(13 * var(--u)) 0;
+    border-top: 1px solid var(--line);
+  }
+  .fact:first-child { border-top: 0; }
+  .fig {
+    font-family: "Manrope", sans-serif; font-weight: 600;
+    font-size: calc(35 * var(--u)); line-height: 1;
+    letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+    min-width: calc(126 * var(--u)); text-align: right;
+    display: flex; align-items: baseline; justify-content: flex-end;
+    gap: calc(7 * var(--u)); white-space: nowrap;
+  }
+  .fig .was { color: var(--line-hi); }
+  .fig .tick { color: var(--accent); display: inline-flex; align-items: center; }
+  .fig .tick svg { width: calc(23 * var(--u)); height: calc(10 * var(--u)); display: block; }
+  .lab {
+    font-size: calc(16.5 * var(--u)); line-height: 1.35;
+    color: var(--ink-2); letter-spacing: -0.006em;
+  }
+
+  .cta {
+    display: inline-flex; align-items: center; gap: calc(11 * var(--u));
+    align-self: flex-start;
+    background: var(--ink); color: var(--paper);
+    padding: calc(14 * var(--u)) calc(20 * var(--u));
+    font-family: "JBMono", ui-monospace, monospace; font-weight: 500;
+    font-size: calc(17 * var(--u)); white-space: nowrap;
+  }
+  .cta .pr { color: #7E7E7E; }
+
+  /* ---- the machine ---------------------------------------------------- */
+  .flow { display: flex; flex-direction: column; min-width: 0; }
+  .cap {
+    font-family: "JBMono", ui-monospace, monospace; font-weight: 500;
+    font-size: calc(12 * var(--u)); letter-spacing: 0.085em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: calc(9 * var(--u));
+  }
+
+  /* Input: a recessed well, no border. Raw material, not a card. */
+  .raw {
+    background: var(--surface);
+    padding: calc(20 * var(--u)) calc(22 * var(--u)) calc(21 * var(--u));
+  }
+  .raw .src {
+    display: flex; align-items: baseline; gap: calc(9 * var(--u));
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(12.5 * var(--u)); color: var(--ink-3);
+    letter-spacing: 0.03em;
+    padding-bottom: calc(12 * var(--u)); margin-bottom: calc(14 * var(--u));
+    border-bottom: 1px solid var(--line-hi);
+  }
+  .raw .src .n { margin-left: auto; letter-spacing: 0.06em; text-transform: uppercase; }
+  /* Two entries, because the rule downstream claims it was stated twice.
+     Both are verbatim from AGENTIC.md's evidence field. */
+  .hit {
+    display: grid; grid-template-columns: calc(88 * var(--u)) 1fr;
+    gap: calc(14 * var(--u));
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(15.5 * var(--u)); line-height: 1.58;
+    color: var(--ink-2);
+  }
+  .hit + .hit { margin-top: calc(12 * var(--u)); }
+  .hit d { color: var(--ink-3); font-size: calc(13 * var(--u)); padding-top: calc(2 * var(--u)); }
+
+  /* Connector: one drawn graphic. Tail node, shaft, and head are a single
+     welded unit; the head overlaps the shaft so no seam can open up. */
+  .link {
+    height: calc(70 * var(--u));
+    display: flex; align-items: center; gap: calc(15 * var(--u));
+    padding-left: calc(20 * var(--u));
+  }
+  .link svg { color: var(--accent); display: block; }
+  /* Height is driven by the gap; width follows the viewBox, so the shaft
+     always meets both panel edges and the head can never drift off it. */
+  .link .down { height: 100%; width: auto; }
+  .link .verb {
+    font-family: "JBMono", ui-monospace, monospace; font-weight: 500;
+    font-size: calc(13 * var(--u)); letter-spacing: 0.02em; color: var(--accent);
+  }
+  .link .verb em {
+    font-style: normal; color: var(--ink-3); letter-spacing: 0.075em;
+    text-transform: uppercase; font-size: calc(11.5 * var(--u));
+    display: block; margin-top: calc(3 * var(--u));
+  }
+
+  /* Output: the payload. The only dark region in the image, which is what
+     gives the banner a focal point at thumbnail size. */
+  .slab {
+    flex: 1; min-height: 0;
+    background: var(--slab); color: var(--slab-ink);
+    display: flex; flex-direction: column;
+  }
+  .slab .bar {
+    display: flex; align-items: center; gap: calc(9 * var(--u));
+    padding: calc(12 * var(--u)) calc(20 * var(--u));
+    border-bottom: 1px solid var(--slab-line);
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(13 * var(--u)); color: var(--slab-mid);
+  }
+  .slab .bar b { color: var(--slab-ink); font-weight: 500; }
+  .slab .bar .dot {
+    width: calc(6 * var(--u)); height: calc(6 * var(--u));
+    background: var(--slab-acc); border-radius: 50%;
+  }
+  .slab .bar .sp { margin-left: auto; letter-spacing: 0.06em; text-transform: uppercase; font-size: calc(11 * var(--u)); }
+  .slab .in {
+    padding: calc(22 * var(--u)) calc(22 * var(--u)) calc(20 * var(--u));
+    display: flex; flex-direction: column; justify-content: center; flex: 1;
+  }
+  /* The rule above is one file in a set; the strip says so without
+     needing a sentence to explain it. */
+  .kb {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: calc(6 * var(--u)) calc(9 * var(--u));
+    padding: calc(13 * var(--u)) calc(22 * var(--u));
+    border-top: 1px solid var(--slab-line);
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(12 * var(--u)); color: #6A6A6A; white-space: nowrap;
+  }
+  .kb .on { color: var(--slab-ink); }
+  .kb .sep { color: #3A3A3A; }
+  .slab h2 {
+    font-family: "Manrope", sans-serif; font-weight: 600;
+    font-size: calc(29 * var(--u)); line-height: 1.24;
+    letter-spacing: -0.018em; margin-bottom: calc(17 * var(--u));
+  }
+  .row {
+    display: grid; grid-template-columns: calc(96 * var(--u)) 1fr;
+    gap: calc(14 * var(--u));
+    font-size: calc(16.5 * var(--u)); line-height: 1.5;
+    color: var(--slab-mid); margin-top: calc(7 * var(--u));
+  }
+  .row k {
+    font-family: "JBMono", ui-monospace, monospace;
+    font-size: calc(13 * var(--u)); letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--slab-acc);
+    padding-top: calc(3 * var(--u));
+  }
+  .row.ev { margin-top: calc(13 * var(--u)); padding-top: calc(13 * var(--u)); border-top: 1px solid var(--slab-line); }
+  .row.ev v { font-family: "JBMono", ui-monospace, monospace; font-size: calc(13 * var(--u)); font-style: normal; }
+
+  /* ---- square + OG: one column, same parts --------------------------- */
+  @media (max-aspect-ratio: 13/10) {
+    :root { --u: calc(100vw / 1330); --gut: calc(32 * var(--u)); }
+    .body {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      row-gap: calc(26 * var(--u));
+      padding-top: calc(26 * var(--u));
+    }
+    .say  { grid-column: 1; grid-row: 1; }
+    .flow { grid-column: 1; grid-row: 2; }
+    .cta  { grid-column: 1; grid-row: 3; }
+    h1 { font-size: calc(46 * var(--u)); }
+    .deck { max-width: 66ch; margin-top: calc(18 * var(--u)); }
+    .facts { margin-top: calc(28 * var(--u)); }
+    .fact { padding: calc(11 * var(--u)) 0; }
+    .link { height: calc(60 * var(--u)); padding-left: calc(34 * var(--u)); }
+    .slab .in { padding: calc(22 * var(--u)); }
+    .row { margin-top: calc(6 * var(--u)); }
+  }
+
+  /* The 1200x630 card is short and wide; it keeps the two-column body but
+     needs the headline to stop competing with the slab for vertical room. */
+  @media (min-aspect-ratio: 18/10) {
+    h1 { font-size: calc(37 * var(--u)); }
+    .facts .fact { padding: calc(9 * var(--u)) 0; }
+    .link .down { height: calc(44 * var(--u)); }
+  }
+</style>
+</head>
+<body>
+  <div class="field"></div>
+
+  <div class="sheet">
+    <i class="cnr tl"></i><i class="cnr tr"></i><i class="cnr bl"></i><i class="cnr br"></i>
+
+    <div class="top">
+      <div class="brand">
+        <span class="mark">jot</span>
+        <span class="rule-v"></span>
+        <span class="kick">portable engineering judgment</span>
+      </div>
+      <span class="repo">github.com/HarjjotSinghh/jot</span>
+    </div>
+
+    <div class="body">
+      <div class="say">
+        <h1><span class="set">Your coding agents already recorded how you work.</span><br />
+          This turns that into a skill they can load.</h1>
+
+        <p class="deck">It reads the logs those agents already keep, finds the calls you have
+          made before, and writes each one down as a rule with <b>its reason, its
+          exception, and the evidence behind it</b>.</p>
+
+        <div class="facts">
+          <div class="cap">measured</div>
+          <div class="fact">
+            <div class="fig">1,398</div>
+            <div class="lab">judgment events mined from local session logs</div>
+          </div>
+          <div class="fact">
+            <div class="fig">5</div>
+            <div class="lab">coding agents read, not just one</div>
+          </div>
+          <div class="fact">
+            <div class="fig">
+              <span class="was">7</span>
+              <span class="tick"><svg viewBox="0 0 40 18" fill="none" aria-hidden="true"><path d="M0 9h27" stroke="currentColor" stroke-width="3"/><path d="M25 1.5 38 9 25 16.5Z" fill="currentColor"/></svg></span>
+              <span>18</span>
+            </div>
+            <div class="lab">of 20 on a blind benchmark, against his own sealed answers</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flow">
+        <div class="cap">what you already typed</div>
+        <div class="raw">
+          <div class="src"><span>agent session logs</span><span class="n">2 hits</span></div>
+          <div class="hit"><d>2026-09-01</d><span>pls make sure they're sonnet 5, never opus or fable (burns my weekly usage and session usage a lot), remember this pls</span></div>
+          <div class="hit"><d>2026-08-29</d><span>use sonnet 5 subagents, never opus or fable subagents.</span></div>
+        </div>
+
+        <div class="link">
+          <svg class="down" viewBox="0 0 20 62" fill="none" aria-hidden="true">
+            <circle cx="10" cy="3.6" r="3.6" fill="currentColor"/>
+            <path d="M10 3.6V47" stroke="currentColor" stroke-width="3"/>
+            <path d="M2.6 45 10 62l7.4-17Z" fill="currentColor"/>
+          </svg>
+          <div class="verb">jot extract<em>rule, reason, exception, evidence</em></div>
+        </div>
+
+        <div class="slab">
+          <div class="bar"><span class="dot"></span><b>AGENTIC.md</b><span>&middot;</span><span>model routing</span><span class="sp">loaded by the agent</span></div>
+          <div class="in">
+            <h2>Subagents are Sonnet 5. Never Opus. Never Fable.</h2>
+            <div class="row"><k>because</k><span>the fan-out is where the volume is, and it burns the weekly quota fastest.</span></div>
+            <div class="row"><k>not when</k><span>a specific hard call needs a stronger model.</span></div>
+            <div class="row ev"><k>evidence</k><v>stated 2x, emphatic &middot; 2026-08-29, 2026-09-01</v></div>
+          </div>
+          <div class="kb">
+            <span>PRINCIPLES.md</span><span class="sep">/</span>
+            <span>ENGINEERING.md</span><span class="sep">/</span>
+            <span>FRONTEND.md</span><span class="sep">/</span>
+            <span class="on">AGENTIC.md</span><span class="sep">/</span>
+            <span>WORKFLOWS.md</span><span class="sep">/</span>
+            <span>VOICE.md</span><span class="sep">/</span>
+            <span>+5 more</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta"><span class="pr">$</span>npx skills add HarjjotSinghh/jot -g</div>
+    </div>
+  </div>
+</body>
+</html>

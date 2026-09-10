@@ -60,3 +60,6 @@ video/videos/*/snapshots/
 video/videos/*/.hyperframes/
 video/videos/*/node_modules/
 video/**/*.mp4
+
+# Playwright MCP scratch output
+.playwright-mcp/
