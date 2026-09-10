@@ -28,8 +28,29 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
-DENYLIST = REPO / "private" / "redact.txt"
+# The denylist always lives beside this script, in the jot checkout.
+HOME_REPO = Path(__file__).resolve().parent.parent
+DENYLIST = HOME_REPO / "private" / "redact.txt"
+
+
+def _target_repo() -> Path:
+    """The repo to scan: whichever one the caller is standing in.
+
+    This used to be hardcoded to HOME_REPO, which meant running the script from
+    another repository silently scanned jot instead of the repo you were about to
+    push, found nothing staged, and printed "clean". A scanner that passes by not
+    looking is worse than no scanner.
+    """
+    out = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        capture_output=True, text=True, check=False,
+    )
+    if out.returncode == 0 and out.stdout.strip():
+        return Path(out.stdout.strip()).resolve()
+    return HOME_REPO
+
+
+REPO = _target_repo()
 
 # Paths that must never be tracked, whatever .gitignore currently says.
 FORBIDDEN_PATHS = re.compile(
@@ -107,6 +128,18 @@ def main() -> int:
         return 0
 
     files = git("diff", "--cached", "--name-only") if args.staged else git("ls-files")
+
+    if REPO != HOME_REPO:
+        print(f"scanning {REPO} (denylist from {HOME_REPO.name})", file=sys.stderr)
+
+    if not files:
+        what = "staged" if args.staged else "tracked"
+        print(f"REFUSING TO PASS: no {what} files found in {REPO}.",
+              file=sys.stderr)
+        print("Zero files scanned is not evidence of cleanliness.",
+              file=sys.stderr)
+        return 1
+
     denylist = load_denylist()
     if not denylist:
         print(f"note: no denylist at {DENYLIST}; running structural checks only",
