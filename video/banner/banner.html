@@ -205,6 +205,7 @@
     padding-left: calc(26 * var(--u));
   }
   .link svg { color: var(--accent); height: 100%; width: auto; }
+  .link .right { display: none; }
   .link .verb {
     font-family: "JBMono", ui-monospace, monospace; font-weight: 500;
     font-size: calc(21 * var(--u)); color: var(--accent); letter-spacing: 0.01em;
@@ -283,6 +284,88 @@
     .fig { font-size: calc(46 * var(--u)); }
     .link { height: calc(60 * var(--u)); }
   }
+
+  /* ---- 5:2 article header: the flow runs left to right ----------------
+     At this ratio the vertical stack leaves voids top and bottom, so the
+     whole transformation turns on its side and the numbers become a strip.
+     -------------------------------------------------------------------- */
+  @media (min-aspect-ratio: 22/10) {
+    :root { --u: calc(100vh / 800); --gut: calc(26 * var(--u)); }
+    .sheet { padding: calc(28 * var(--u)) calc(34 * var(--u)) calc(30 * var(--u)); }
+
+    .body {
+      grid-template-columns: 1.12fr 1.42fr;
+      grid-template-rows: 1fr auto;
+      column-gap: calc(40 * var(--u)); row-gap: calc(20 * var(--u));
+      padding-top: calc(22 * var(--u));
+    }
+    .say { display: contents; }
+    h1 {
+      grid-column: 1; grid-row: 1; align-self: center;
+      font-size: calc(46 * var(--u));
+    }
+
+    /* Both bottom-strip items own row 2 across the full width; one hugs the
+       left edge, the other the right, so they read as one rule-topped band. */
+    .facts, .cta { grid-column: 1 / span 2; grid-row: 2; }
+    .facts {
+      margin-top: 0; justify-self: stretch; align-self: center;
+      display: flex; align-items: center; gap: calc(30 * var(--u));
+      border-top: 1px solid var(--line); padding-top: calc(18 * var(--u));
+    }
+    .facts .cap { display: none; }
+    .fact {
+      display: flex; align-items: center; gap: calc(12 * var(--u));
+      border-top: 0; padding: 0;
+    }
+    .fact + .fact {
+      border-left: 1px solid var(--line);
+      padding-left: calc(30 * var(--u));
+    }
+    .fact .ic svg { width: calc(25 * var(--u)); height: calc(25 * var(--u)); }
+    .fig { font-size: calc(36 * var(--u)); }
+    .fig .tick svg { width: calc(24 * var(--u)); height: calc(11 * var(--u)); }
+    .lab { font-size: calc(18 * var(--u)); }
+    .cta {
+      justify-self: end; align-self: center;
+      padding: calc(14 * var(--u)) calc(18 * var(--u));
+      font-size: calc(19 * var(--u));
+    }
+
+    .flow {
+      grid-column: 2; grid-row: 1;
+      display: grid; align-content: center;
+      grid-template-columns: 0.92fr auto 1.62fr;
+      grid-template-rows: auto auto;
+      column-gap: calc(18 * var(--u));
+    }
+    .flow .cap  { grid-column: 1 / span 3; grid-row: 1; }
+    .flow .raw  { grid-column: 1; grid-row: 2; align-self: start; }
+    .flow .link { grid-column: 2; grid-row: 2; align-self: start; }
+    .flow .card { grid-column: 3; grid-row: 2; align-self: start; flex: 0 0 auto; }
+
+    .raw { padding: calc(18 * var(--u)) calc(19 * var(--u)); gap: calc(11 * var(--u)); }
+    .raw .txt { font-size: calc(19 * var(--u)); line-height: 1.5; }
+    .raw .meta { font-size: calc(15 * var(--u)); }
+    .raw .q svg { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+
+    /* Horizontal twin of the connector, label riding above the shaft. */
+    .link {
+      height: auto; width: auto;
+      flex-direction: column; align-items: center;
+      gap: calc(9 * var(--u)); padding-left: 0;
+      margin-top: calc(30 * var(--u));
+    }
+    .link .down  { display: none; }
+    .link .right { display: block; width: calc(104 * var(--u)); height: auto; }
+    .link .verb { font-size: calc(17 * var(--u)); white-space: nowrap; }
+
+    .card h2 { font-size: calc(35 * var(--u)); margin-bottom: calc(18 * var(--u)); }
+    .card .in { padding: calc(24 * var(--u)); }
+    .row { font-size: calc(20 * var(--u)); margin-top: calc(13 * var(--u)); }
+    .row .ic svg { width: calc(23 * var(--u)); height: calc(23 * var(--u)); }
+    .row.ev { font-size: calc(16 * var(--u)); margin-top: calc(14 * var(--u)); padding-top: calc(13 * var(--u)); }
+  }
 </style>
 </head>
 <body>
@@ -349,7 +432,12 @@
         </div>
 
         <div class="link">
-          <svg viewBox="0 0 20 62" fill="none" aria-hidden="true">
+          <svg class="right" viewBox="0 0 62 20" fill="none" aria-hidden="true">
+            <circle cx="3.6" cy="10" r="3.6" fill="currentColor"/>
+            <path d="M3.6 10H47" stroke="currentColor" stroke-width="3"/>
+            <path d="M45 2.6 62 10l-17 7.4Z" fill="currentColor"/>
+          </svg>
+          <svg class="down" viewBox="0 0 20 62" fill="none" aria-hidden="true">
             <circle cx="10" cy="3.6" r="3.6" fill="currentColor"/>
             <path d="M10 3.6V47" stroke="currentColor" stroke-width="3"/>
             <path d="M2.6 45 10 62l7.4-17Z" fill="currentColor"/>
