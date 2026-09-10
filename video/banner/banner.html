@@ -290,7 +290,7 @@
      whole transformation turns on its side and the numbers become a strip.
      -------------------------------------------------------------------- */
   @media (min-aspect-ratio: 22/10) {
-    :root { --u: calc(100vh / 800); --gut: calc(26 * var(--u)); }
+    :root { --u: min(calc(100vh / 800), calc(100vw / 2000)); --gut: calc(26 * var(--u)); }
     .sheet { padding: calc(28 * var(--u)) calc(34 * var(--u)) calc(30 * var(--u)); }
 
     .body {
@@ -365,6 +365,72 @@
     .row { font-size: calc(20 * var(--u)); margin-top: calc(13 * var(--u)); }
     .row .ic svg { width: calc(23 * var(--u)); height: calc(23 * var(--u)); }
     .row.ev { font-size: calc(16 * var(--u)); margin-top: calc(14 * var(--u)); padding-top: calc(13 * var(--u)); }
+  }
+
+  /* ---- small wide banner (1000x420 and similar) -----------------------
+     Same parts, but the headline can no longer sit beside the band: at this
+     width it would squeeze the rule card to about 260px and the copy would
+     wrap to orphans. So the headline goes above a full-width band, and the
+     numbers compress to one line sharing the footer with the install.
+     -------------------------------------------------------------------- */
+  @media (min-aspect-ratio: 22/10) and (max-width: 1400px) {
+    :root { --u: calc(100vw / 1500); --gut: calc(21 * var(--u)); }
+    .sheet { padding: calc(22 * var(--u)) calc(26 * var(--u)) calc(24 * var(--u)); }
+    .top { padding-bottom: calc(13 * var(--u)); }
+    .mark { font-size: calc(38 * var(--u)); }
+    .rule-v { height: calc(24 * var(--u)); }
+    .kick, .repo { font-size: calc(14 * var(--u)); }
+    .repo svg { width: calc(17 * var(--u)); height: calc(17 * var(--u)); }
+
+    .body {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      row-gap: calc(15 * var(--u));
+      padding-top: calc(16 * var(--u));
+    }
+    h1 {
+      grid-column: 1; grid-row: 1; align-self: start;
+      font-size: calc(37 * var(--u)); line-height: 1.14;
+    }
+    .flow { grid-column: 1; grid-row: 2; align-content: center; }
+    .facts, .cta { grid-column: 1; grid-row: 3; }
+
+    .flow {
+      grid-template-columns: 0.82fr auto 1.62fr;
+      column-gap: calc(15 * var(--u));
+    }
+    .flow .cap { display: none; }
+    .flow .raw { grid-row: 1 / span 2; align-self: center; }
+    .flow .link { grid-row: 1 / span 2; align-self: center; margin-top: 0; }
+    .flow .card { grid-row: 1 / span 2; }
+
+    .raw { padding: calc(14 * var(--u)) calc(15 * var(--u)); gap: calc(9 * var(--u)); }
+    .raw .txt { font-size: calc(17 * var(--u)); line-height: 1.45; }
+    .raw .meta { font-size: calc(13 * var(--u)); margin-top: calc(8 * var(--u)); }
+    .raw .q svg { width: calc(17 * var(--u)); height: calc(17 * var(--u)); }
+
+    .link .right { width: calc(78 * var(--u)); }
+    .link .verb { font-size: calc(15 * var(--u)); }
+    .link { gap: calc(6 * var(--u)); }
+
+    .card .bar { padding: calc(10 * var(--u)) calc(15 * var(--u)); font-size: calc(16 * var(--u)); }
+    .card .bar svg { width: calc(18 * var(--u)); height: calc(18 * var(--u)); }
+    .card .bar .sp { font-size: calc(12.5 * var(--u)); }
+    .card .in { padding: calc(16 * var(--u)) calc(17 * var(--u)); }
+    .card h2 { font-size: calc(27 * var(--u)); margin-bottom: calc(12 * var(--u)); }
+    .row { font-size: calc(18 * var(--u)); margin-top: calc(9 * var(--u)); gap: calc(11 * var(--u)); }
+    .row .ic svg { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+    .row.ev { font-size: calc(14.5 * var(--u)); margin-top: calc(11 * var(--u)); padding-top: calc(10 * var(--u)); }
+
+    .facts { gap: calc(20 * var(--u)); padding-top: calc(13 * var(--u)); }
+    .fact + .fact { padding-left: calc(20 * var(--u)); }
+    .fact { gap: calc(9 * var(--u)); }
+    .fact .ic svg { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+    .fig { font-size: calc(27 * var(--u)); }
+    .fig .tick svg { width: calc(19 * var(--u)); height: calc(9 * var(--u)); }
+    .lab { font-size: calc(15 * var(--u)); }
+    .cta { padding: calc(11 * var(--u)) calc(15 * var(--u)); font-size: calc(16 * var(--u)); }
+    .cta svg { width: calc(18 * var(--u)); height: calc(18 * var(--u)); }
   }
 </style>
 </head>
