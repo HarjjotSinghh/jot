@@ -285,6 +285,18 @@
     .link { height: calc(60 * var(--u)); }
   }
 
+  /* ---- 2:1 (Medium's cover crop) --------------------------------------
+     Wider than 16:9 but not yet the sideways band. The stack still works;
+     the headline just needs a wider column so neither sentence orphans a
+     word onto a third line.
+     -------------------------------------------------------------------- */
+  @media (min-aspect-ratio: 195/100) and (max-aspect-ratio: 22/10) {
+    .body { grid-template-columns: 1.18fr 1.28fr; }
+    h1 { font-size: calc(44 * var(--u)); }
+    .fact { padding: calc(13 * var(--u)) 0; }
+    .fig { font-size: calc(48 * var(--u)); }
+  }
+
   /* ---- 5:2 article header: the flow runs left to right ----------------
      At this ratio the vertical stack leaves voids top and bottom, so the
      whole transformation turns on its side and the numbers become a strip.
